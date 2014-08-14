@@ -14,5 +14,6 @@
   	<input type="hidden" value="{{renter.email}}" name="renter">
   	<input type="submit" value="Add Bike">
   </form>
+  <a href="zxing://scan/?ret={{url_for('renter', email=renter.email, _external=True)|urlencode}}?attach_bike=%7BCODE%7D" class="button btn">Scan</a>
 {% endblock %}
 <script>

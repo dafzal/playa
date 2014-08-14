@@ -26,12 +26,20 @@ def bike_return(code):
   db.commit()
   return render_template('bike.html', bike=bike)
 
-@app.route('/renter/<email>')
+@app.route('/renter/<email>', methods=['GET','POST'])
 def renter(email):
-  if db.query(Renter).filter_by(email=email).count():
-    return render_template('renter.html', renter=db.query(Renter).filter_by(email=email)[0])
-  else:
+  if not db.query(Renter).filter_by(email=email).count():
     abort(404)
+  
+  renter = db.query(Renter).filter_by(email=email)[0]
+  err = ''
+  if 'attach_bike' in request.values:
+    bike = db.query(Bike).filter_by(code=request.values['attach_bike'])[0]
+    status, err = renter.attach_bike(bike)
+    db.commit()
+
+  return render_template('renter.html', renter=renter, error=err)
+
 
 @app.route('/renters')
 def renters():
