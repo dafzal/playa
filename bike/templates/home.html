@@ -5,7 +5,7 @@
 <input type="text" name="code">
 <input type="submit" value="lookup" >
 </form>
-<a href="zxing://scan/?ret={{url_for('scan', _external=True)|urlencode}}?code=%2F%7BCODE%7D%2F" class="button btn">Scan</a>
+<a href="zxing://scan/?ret={{url_for('scan', _external=True)|urlencode}}?code=%7BCODE%7D" class="button btn">Scan</a>
 <!--   <input type="text" data-provide="typeahead" data-items="1" data-minLength="1" data-source="[{% for renter in renters %}&quot;{{renter.email}}&quot;,{% endfor %}]" >
  -->
 {% endblock %}
