@@ -3,3 +3,4 @@ sqlalchemy
 flask_script
 flask-wtf
 gunicorn==18.0
+ipdb
