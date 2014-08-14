@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="scan" method="get">
+<input type="text" name="code">
+<input type="submit" value="lookup" >
+</form>
+<button>scan</button>
+<!--   <input type="text" data-provide="typeahead" data-items="1" data-minLength="1" data-source="[{% for renter in renters %}&quot;{{renter.email}}&quot;,{% endfor %}]" >
+ -->
+{% endblock %}

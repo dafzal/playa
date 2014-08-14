@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Bike id: {{bike.code}}</h2>
+  {% if bike.comment %}
+  <p>Comments: {{bike.comment}}</p>
+  {% endif %}
+  {% if bike.renter %}
+  <p>Bike assigned to <a href="/renter/{{bike.renter.email}}">{{bike.renter.email}}</a></p>
+  <form method="POST">
+  	<textarea name="comment" placeholder="comments..." value="{{bike.comment}}"></textarea>
+  	<input type="hidden" name="return" value="true">
+  	<input type="submit" value="Return Bike">
+  </form>
+  {% else %}
+  <p>Bike unassigned</p>
+  <form method="POST">
+  	<textarea name="comment" placeholder="comments..." value="{{bike.comment}}"></textarea>
+  	<input type="hidden" name="return" value="false">
+  	<br>
+  	<input type="submit" value="Save Comment">
+  </form>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Renter {{renter.name}} {{renter.email}} {{renter.zipcode}} {{renter.phone}}</h2>
+  {% if error %}
+  <h3> {{error}} </h3>
+  {% endif %}
+  <p>{{renter.desc}} x{{renter.qty}}</p>
+  {% for bike in renter.bikes %}
+  <p>Bike rented: <a href="/bike/{{bike.code}}">{{bike}}</a></p>
+  {% endfor %}
+  <form method="POST">
+  	<input type="text" name="attach_bike" placeholder="Bike Serial">
+  	<input type="hidden" value="{{renter.email}}" name="renter">
+  	<input type="submit" value="Add Bike">
+  </form>
+{% endblock %}
+<script>
