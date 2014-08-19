@@ -11,16 +11,16 @@
   	<textarea name="comment" placeholder="comments..." value="{{bike.comment}}"></textarea>
   	<input type="hidden" name="return" value="true">
     <br>
-  	<input type="submit" value="Return Bike">
+  	<input type="submit" value="Return Bike" class="btn btn-hg btn-primary">
   </form>
   {% else %}
   <p>Bike unassigned</p>
-  
+
   <form method="POST">
   	<textarea name="comment" placeholder="comments..." value="{{bike.comment}}"></textarea>
   	<input type="hidden" name="return" value="false">
   	<br>
-  	<input type="submit" value="Save Comment">
+  	<input type="submit" value="Save Comment" class="btn btn-hg btn-primary">
   </form>
   {% endif %}
 
