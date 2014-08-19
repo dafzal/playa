@@ -32,7 +32,7 @@ class Renter(Base):
     if 'bike rental' not in self.desc.lower():
       return False, 'Not valid rental ' + self.desc
     if len(self.bikes) >= self.qty:
-      return False, 'Too many bikes rented:%d reservation:%d' % (len(self.bikes), self.qty)
+      return False, 'Too many bikes rented (%d)! Reservation is only for %d bikes' % (len(self.bikes), self.qty)
     self.bikes.append(bike)
     return True, ''
 
@@ -46,4 +46,4 @@ class Bike(Base):
   def __init__(self, code=None):
     self.code = code  
   def __repr__(self):
-    return 'Bike %r' % (self.code)
+    return 'Bike %s' % (self.code)

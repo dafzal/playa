@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Renter {{renter.name}} {{renter.email}} {{renter.zipcode}} {{renter.phone}}</h2>
   {% if error %}
-  <h3> {{error}} </h3>
+  <h4> <span class="label label-danger">{{error}}</span></h4>
   {% endif %}
+  <h2>Playa {{renter.name}}</h2>
+  
   <p>{{renter.desc}} x{{renter.qty}}</p>
   {% for bike in renter.bikes %}
   <p>Bike rented: <a href="/bike/{{bike.code}}">{{bike}}</a></p>

@@ -2,7 +2,7 @@ from bike import app, db
 from bike.models import Bike, Renter
 from flask import request, redirect, render_template, abort
 import re
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from flask import jsonify
 
 @app.route('/')
@@ -75,24 +75,23 @@ def scan():
   elif renters.count() > 1:
     return render_template('renters.html', renters=renters)
   
-  # Lookup zipcode
+  # change to search all or
+  # search name, zip, phone
+  # Build up search query
   parts = code.split()
-  all_renters = []
-  if len(parts) > 1:
-    for part in parts:
-      zipcode = part.strip()
-      name = ' '.join(x.strip() for x in parts if x != zipcode)
-      print name
-      print zipcode
-      renters = db.query(Renter).filter(Renter.name.ilike('%'+name+'%'),
-                                        Renter.zipcode.ilike('%'+zipcode+'%'))
-      if renters.count() > 0:
-        print 'zip found'
-        all_renters += list(renters)
-    if len(all_renters) == 1:
-      return redirect('/renter/'+all_renters[0].email)
-    elif len(all_renters) > 1:
-      return render_template('renters.html', renters=all_renters)
+  queries = []
+  # (part0 in name or part0 in zipcode) and (part1 in name or part1 in zipcode)
+  for part in parts:
+    queries.append(or_(Renter.name.ilike('%'+part+'%'), 
+                       Renter.zipcode.ilike('%'+part+'%'), 
+                       Renter.email.ilike('%'+part+'%'), 
+                       Renter.phone.ilike('%'+part+'%')))
 
+  print str(queries)
+  renters = db.query(Renter).filter(*queries)
+  if renters.count() > 0:
+    return render_template('renters.html', renters=renters)
+
+  # not sure?
   return 'not found'
     
