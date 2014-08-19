@@ -3,9 +3,9 @@
 {% block content %}
 <form action="scan" method="get">
 <input type="text" name="code">
-<input type="submit" value="lookup" >
+<input type="submit" value="lookup" class="btn btn-hg btn-primary">
 </form>
-<a href="zxing://scan/?ret={{url_for('scan', _external=True)|urlencode}}?code=%7BCODE%7D" class="button btn">Scan</a>
+<a href="zxing://scan/?ret={{url_for('scan', _external=True)|urlencode}}?code=%7BCODE%7D" class="btn btn-danger">Scan</a>
 <!--   <input type="text" data-provide="typeahead" data-items="1" data-minLength="1" data-source="[{% for renter in renters %}&quot;{{renter.email}}&quot;,{% endfor %}]" >
  -->
 {% endblock %}
