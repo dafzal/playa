@@ -9,11 +9,11 @@ db = scoped_session(sessionmaker(autocommit=False,
                      bind=engine))
 Base = declarative_base()
 Base.query = db.query_property()
-
 app = Flask(__name__)
 
 
 app = Flask(__name__)
+app.secret_key = 'A0Zr98j/3yX 123R~XHH!jmN]LWX/,?RT'
 @app.teardown_appcontext
 def shutdown_session(exception=None):
   db.remove()

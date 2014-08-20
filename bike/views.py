@@ -4,6 +4,7 @@ from flask import request, redirect, render_template, abort
 import re
 from sqlalchemy import or_, and_
 from flask import jsonify
+from flask import flash
 
 @app.route('/')
 def index():
@@ -22,6 +23,8 @@ def bike_return(code):
   if 'comment' in request.values:
     bike.comment = request.values['comment']
   if request.values.get('return','') == 'true':
+    old_id = bike.renter.id
+    flash('Bike was returned by <a href=/renter/%s>%s</a>' % (old_id, bike.renter.email))
     bike.renter = None
   db.commit()
   return render_template('bike.html', bike=bike)
@@ -34,9 +37,12 @@ def renter(oid):
   renter = db.query(Renter).filter_by(id=oid)[0]
   err = ''
   if 'attach_bike' in request.values:
-    bike = db.query(Bike).filter_by(code=request.values['attach_bike'])[0]
-    status, err = renter.attach_bike(bike)
-    db.commit()
+    if not request.values['attach_bike']:
+      flash('No bike specified')
+    else:
+      bike = db.query(Bike).filter_by(code=request.values['attach_bike'])[0]
+      status, err = renter.attach_bike(bike)
+      db.commit()
 
   return render_template('renter.html', renter=renter, error=err)
 

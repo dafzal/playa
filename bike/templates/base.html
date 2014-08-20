@@ -31,6 +31,13 @@
     <div class="container">
       <div class="content">
         {% block page_header %}{% endblock %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <h3><span class="label label-warning">{{message|safe}}</span></h3>
+          {% endfor %}
+          {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
       </div>
     </div>
