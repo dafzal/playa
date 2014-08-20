@@ -40,7 +40,7 @@ def renter(oid):
     if not request.values['attach_bike']:
       flash('No bike specified')
     else:
-      bike = db.query(Bike).filter_by(code=request.values['attach_bike'])[0]
+      bike = db.query(Bike).filter_by(code=str(int(request.values['attach_bike'])))[0]
       status, err = renter.attach_bike(bike)
       db.commit()
 
@@ -55,20 +55,25 @@ def renters():
 def bikes():
   return render_template('bikes.html', bikes=db.query(Bike))
 
-@app.route('/renter/<oid>', methods=['POST'])
-def attach_bike(oid):
-  if 'attach_bike' in request.values:
-    renter = db.query(Renter).filter_by(id=request.values['renter'])[0]
-    bike = db.query(Bike).filter_by(code=request.values['attach_bike'])[0]
-    status, err = renter.attach_bike(bike)
-    db.commit()
-    return render_template('renter.html', renter=renter, error=err)
+# @app.route('/renter/<oid>', methods=['POST'])
+# def attach_bike(oid):
+#   if 'attach_bike' in request.values:
+#     renter = db.query(Renter).filter_by(id=request.values['renter'])[0]
+#     bike = db.query(Bike).filter_by(code=request.values['attach_bike'])[0]
+#     status, err = renter.attach_bike(bike)
+#     db.commit()
+#     return render_template('renter.html', renter=renter, error=err)
 @app.route('/scan')
 def scan():
   code = request.values['code'].strip()
   if code.strip() == '':
     flash('Enter a search query!')
     return redirect('/')
+  try:
+    # remove trailing 0s
+    code = str(int(code))
+  except:
+    pass
   # Lookup bike serial
   if db.query(Bike).filter_by(code=code).count():
     return redirect('/bike/'+code)
