@@ -24,7 +24,7 @@ def bike_return(code):
     bike.comment = request.values['comment']
   if request.values.get('return','') == 'true':
     old_id = bike.renter.id
-    flash('Bike was returned by <a href=/renter/%s>%s</a>' % (old_id, bike.renter.email))
+    flash('<a href=/renter/%s>Bike was returned by %s</a>' % (old_id, bike.renter.name))
     bike.renter = None
   db.commit()
   return render_template('bike.html', bike=bike)
@@ -42,6 +42,7 @@ def renter(oid):
     else:
       bike = db.query(Bike).filter_by(code=str(int(request.values['attach_bike'])))[0]
       status, err = renter.attach_bike(bike)
+      flash('Bike added!')
       db.commit()
 
   return render_template('renter.html', renter=renter, error=err)
