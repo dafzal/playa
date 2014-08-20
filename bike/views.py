@@ -26,12 +26,12 @@ def bike_return(code):
   db.commit()
   return render_template('bike.html', bike=bike)
 
-@app.route('/renter/<email>', methods=['GET','POST'])
-def renter(email):
-  if not db.query(Renter).filter_by(email=email).count():
+@app.route('/renter/<oid>', methods=['GET','POST'])
+def renter(oid):
+  if not db.query(Renter).filter_by(id=oid).count():
     abort(404)
   
-  renter = db.query(Renter).filter_by(email=email)[0]
+  renter = db.query(Renter).filter_by(id=oid)[0]
   err = ''
   if 'attach_bike' in request.values:
     bike = db.query(Bike).filter_by(code=request.values['attach_bike'])[0]
@@ -49,10 +49,10 @@ def renters():
 def bikes():
   return render_template('bikes.html', bikes=db.query(Bike))
 
-@app.route('/renter/<email>', methods=['POST'])
-def attach_bike(email):
+@app.route('/renter/<oid>', methods=['POST'])
+def attach_bike(oid):
   if 'attach_bike' in request.values:
-    renter = db.query(Renter).filter_by(email=request.values['renter'])[0]
+    renter = db.query(Renter).filter_by(id=request.values['renter'])[0]
     bike = db.query(Bike).filter_by(code=request.values['attach_bike'])[0]
     status, err = renter.attach_bike(bike)
     db.commit()
@@ -60,18 +60,20 @@ def attach_bike(email):
 @app.route('/scan')
 def scan():
   code = request.values['code'].strip()
+  if code.strip() == '':
+    return 'Enter something to search'
   # Lookup bike serial
   if db.query(Bike).filter_by(code=code).count():
     return redirect('/bike/'+code)
   # Lookup renter code
-  elif db.query(Renter).filter_by(email=code).count():
-    return redirect('/renter/'+code)
+  elif db.query(Renter).filter_by(email=code).count() == 1:
+    return redirect('/renter/'+db.query(Renter).filter_by(email=code)[0].id)
 
   # Lookup renter email or phone
   renters = db.query(Renter).filter(or_(Renter.email.ilike(code),
                                         Renter.phone.ilike(code)))
   if renters.count() == 1:
-    return redirect('/renter/'+renters[0].email)
+    return redirect('/renter/'+renters[0].id)
   elif renters.count() > 1:
     return render_template('renters.html', renters=renters)
   

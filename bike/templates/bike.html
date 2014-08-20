@@ -6,7 +6,7 @@
   <p>{{bike.comment}}</p>
   {% endif %}
   {% if bike.renter %}
-  <p>Bike assigned to <a href="/renter/{{bike.renter.email}}">{{bike.renter.email}}</a></p>
+  <p>Bike assigned to <a href="/renter/{{bike.renter.id}}">{{bike.renter.email}}</a></p>
   <form method="POST">
   	<textarea name="comment" placeholder="comments..." value="{{bike.comment}}"></textarea>
   	<input type="hidden" name="return" value="true">
