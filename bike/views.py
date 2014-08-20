@@ -67,7 +67,8 @@ def attach_bike(oid):
 def scan():
   code = request.values['code'].strip()
   if code.strip() == '':
-    return 'Enter something to search'
+    flash('Enter a search query!')
+    return redirect('/')
   # Lookup bike serial
   if db.query(Bike).filter_by(code=code).count():
     return redirect('/bike/'+code)
