@@ -42,7 +42,8 @@ def renter(oid):
     else:
       bike = db.query(Bike).filter_by(code=str(int(request.values['attach_bike'])))[0]
       status, err = renter.attach_bike(bike)
-      flash('Bike added!')
+      if not err:
+        flash('Bike added!')
       db.commit()
 
   return render_template('renter.html', renter=renter, error=err)
@@ -80,7 +81,7 @@ def scan():
     return redirect('/bike/'+code)
   # Lookup renter code
   elif db.query(Renter).filter_by(email=code).count() == 1:
-    return redirect('/renter/'+db.query(Renter).filter_by(email=code)[0].id)
+    return redirect('/renter/'+str(db.query(Renter).filter_by(email=code)[0].id))
 
   # Lookup renter email or phone
   renters = db.query(Renter).filter(or_(Renter.email.ilike(code),

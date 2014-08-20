@@ -2,9 +2,9 @@
 
 {% block content %}
 <table class="table table-hover">
-  <tr><th>name</th><th>email</th><th>description</th><th>qty</th><th>bikes</th><th>zipcode</th><th>phone</th></tr>
+  <tr><th>name</th><th>description</th><th>qty</th><th>bikes</th><th>email</th><th>zipcode</th><th>phone</th></tr>
   {% for renter in renters %}
-  <tr><td><a href="{{url_for('renter', oid=renter.id)}}">{{renter.name}}</a></td><td><a href="{{url_for('renter', oid=renter.id)}}">{{renter.email}}</a></td><td>{{renter.desc}}</td><td>{{renter.qty}}</td><td>{% for bike in renter.bikes %}<a href="{{url_for('bike', code=bike.code)}}">{{bike.code}}</a>{% endfor %}</td><td>{{renter.zipcode}}</td><td>{{renter.phone}}</tr>
+  <tr><td><a href="{{url_for('renter', oid=renter.id)}}">{{renter.name}}</a></td><td>{{renter.desc}}</td><td>{{renter.qty}}</td><td>{% for bike in renter.bikes %}<a href="{{url_for('bike', code=bike.code)}}"><span class="label label-info">{{bike.code}}</span></a>&nbsp;{% endfor %}</td><td><a href="{{url_for('scan', code=renter.email)}}">{{renter.email}}</a></td><td>{{renter.zipcode}}</td><td>{{renter.phone}}</tr>
   {% endfor %}
 </table>
 {% endblock %}
