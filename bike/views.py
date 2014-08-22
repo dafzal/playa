@@ -109,5 +109,6 @@ def scan():
     return render_template('renters.html', renters=renters)
 
   # not sure?
-  return 'not found'
+  flash('Not found!')
+  return render_template('home.html')
     

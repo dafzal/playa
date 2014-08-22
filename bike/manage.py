@@ -22,11 +22,12 @@ class Data(Command):
     from bike import db
     reader = DictReader(open('data.csv','r').readlines())
     for r in reader:
-      db.add(Renter(name=r['fname'] + ' ' + r['lname'], 
-        email=r['email'], desc=r['desc'], qty=r['qty'], 
-        zipcode=r['zip'], phone=r['phone']))
+      r = {k: v.decode('utf8','ignore') for k, v in r.iteritems()}
+      db.add(Renter(name=r['Billing Name'], 
+        email=r['Email'], desc=r['Lineitem name'], qty=r['Quantity'], 
+        zipcode=r['Billing Zip'], phone=r['Billing Phone']))
 
-    for i in xrange(100):
+    for i in xrange(1000):
       db.add(Bike(code=str(i)))
     try:
       db.commit()
